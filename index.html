@@ -1,0 +1,104 @@
+<!DOCTYPE html> 
+
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" 
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+    crossorigin=""/> 
+
+    <link rel="stylesheet" href="style.css" /> 
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" 
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" 
+        crossorigin=""></script> 
+    <title>IP Address Tracker</title> 
+</head> 
+<body> 
+    <div class="container">
+         <div class="header_bg"> 
+            <h2 class="header_title">IP Address Tracker</h2>
+            <div class="header_input_container">
+                <input id="input_id" class="header_input" placeholder="Search for any IP address or domain"></input>
+                <button onClick=giver() class="header_send">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14"><path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6"/></svg>
+                </button>
+                
+            </div>
+            <div class="header_info">
+                <p class="mini-title">ip address</p>
+                <h3 class="info_text" id="ip_id"></h3>
+                <p class="mini-title">location</p>
+                <h3 class="info_text" id="location_id"></h3>
+                <p class="mini-title">timezone</p>
+                <h3 class="info_text" id="timezone_id"></h3>
+                <p class="mini-title">Isp</p>
+                <h3 class="info_text" id="isp_id"></h3>
+            </div>
+        </div>
+        <div id="mapid"></div> 
+    </div>
+    
+    <script> 
+    
+    
+
+    
+        
+    </script> 
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> 
+    <script type="text/javascript"> 
+    // Get the input field
+var input = document.getElementById("input_id");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    giver();
+  }
+});
+    function giver()  {
+        ip = document.getElementById("input_id").value
+        let liem = {}
+        var ip 
+        var api_key = "at_QJZHIyDJgJj9tCF3ZhIlwwPVUe0Ir"; 
+        $(function () { 
+           $.ajax({ 
+               url: "https://geo.ipify.org/api/v1", 
+               data: {apiKey: api_key, ipAddress: ip}, 
+               success: function(data) { 
+                //    $("body").append("<pre>"+ JSON.stringify(data,"",2)+"</pre>"); 
+                liem = JSON.stringify(data,"",2)
+                console.log(liem)
+                // document.getElementById("location_id").innerHTML = "TEST"
+                
+               } 
+           });
+        }); 
+        setTimeout(function(){ 
+            let myObj = JSON.parse(liem)
+            document.getElementById("ip_id").innerHTML = myObj.ip; 
+            document.getElementById("location_id").innerHTML = myObj.location.city; 
+            document.getElementById("timezone_id").innerHTML = myObj.location.timezone;
+            document.getElementById("isp_id").innerHTML = myObj.isp
+            
+            var mymap = L.map('mapid').setView([myObj.location.lat, myObj.location.lng], 17); 
+        const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>contributors' 
+        const api_url = 'https://api.wheretheiss.at/v1/satellites/25544' 
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' 
+        const tiles = L.tileLayer(tileUrl, {attribution}) 
+        tiles.addTo(mymap) 
+        }, 1000);
+    }
+     
+
+    </script> 
+
+</body> 
+
+</html> 
