@@ -53,25 +53,21 @@
     // Get the input field
 var input = document.getElementById("input_id");
 var mymap
-// Execute a function when the user releases a key on the keyboard
 input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
-    // Cancel the default action, if needed
     event.preventDefault();
-    // Trigger the button element with a click
     giver();
   }
 });
     function giver()  {
-        ip = document.getElementById("input_id").value
         let liem = {}
-        var ip 
         var api_key = "at_QJZHIyDJgJj9tCF3ZhIlwwPVUe0Ir"; 
+  
         $(function () { 
            $.ajax({ 
                url: "https://geo.ipify.org/api/v1", 
-               data: {apiKey: api_key, ipAddress: ip}, 
+               data: {apiKey: api_key, ipAddress: input.value, domain: input.value}, 
                success: function(data) { 
                 liem = JSON.stringify(data,"",2)
                } 
