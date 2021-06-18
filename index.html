@@ -17,87 +17,94 @@
 </head> 
 <body> 
     <div class="container">
-         <div class="header_bg"> 
+        <div class="header_bg"> 
             <h2 class="header_title">IP Address Tracker</h2>
-            <div class="header_input_container">
+            <form class="header_input_container">
                 <input id="input_id" class="header_input" placeholder="Search for any IP address or domain"></input>
-                <button onClick=giver() class="header_send">
+                <button type="submit" class="header_send">
                     <svg xmlns="http://www.w3.org/2000/svg" width="11" height="14"><path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6"/></svg>
                 </button>
-                
-            </div>
+            </form>
             <div class="header_info">
-                <div class="hallo" id="firstinfo">
-                    <p class="mini-title">ip address</p>
-                    <h3 class="info_text" id="ip_id"></h3>
+                <div class="info_container" id="firstinfo">
+                    <p class="info_title">ip address</p>
+                    <h3 class="info_value" id="ip_id"></h3>
                 </div>
-                <div class="hallo">
-                    <p class="mini-title">location</p>
-                    <h3 class="info_text" id="location_id"></h3>
+                <div class="info_container">
+                    <p class="info_title">location</p>
+                    <h3 class="info_value" id="location_id"></h3>
                 </div>
-                <div class="hallo">
-                    <p class="mini-title">timezone</p>
-                    <h3 class="info_text" id="timezone_id"></h3>
+                <div class="info_container">
+                    <p class="info_title">timezone</p>
+                    <h3 class="info_value" id="timezone_id"></h3>
                 </div>
-                <div class="hallo">
-                    <p class="mini-title">Isp</p>
-                    <h3 class="info_text" id="isp_id"></h3>
+                <div class="info_container">
+                    <p class="info_title">Isp</p>
+                    <h3 class="info_value" id="isp_id"></h3>
                 </div>
             </div>
-        </div>
+            </div>
         <div id="mapid"></div> 
     </div>
     
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> 
     <script type="text/javascript"> 
-    // Get the input field
-var input = document.getElementById("input_id");
-var mymap
-input.addEventListener("keyup", function(event) {
-  // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    giver();
-  }
+
+const api_key = "at_QJZHIyDJgJj9tCF3ZhIlwwPVUe0Ir"; 
+let infoContainer = document.querySelector(".header_info")
+
+let input = document.querySelector(".header_input_container")
+let ipInfo = document.getElementById("ip_id")
+let locationInfo = document.getElementById("location_id")
+let timezoneInfo = document.getElementById("timezone_id")
+let ispInfo = document.getElementById("isp_id")
+let mymap
+
+input.addEventListener("submit", function(event) {
+    event.preventDefault()
+    loadIpData()
 });
-    function giver()  {
-        let liem = {}
-        var api_key = "at_QJZHIyDJgJj9tCF3ZhIlwwPVUe0Ir"; 
-  
+    function loadIpData() {
+        let sObject = {}
+        let ipValue
+        if(mymap !== undefined) {
+            mymap.remove();
+            ipValue = input[0].value
+        } else {
+            ipValue = "192.212.174.101"
+        }
         $(function () { 
            $.ajax({ 
                url: "https://geo.ipify.org/api/v1", 
-               data: {apiKey: api_key, ipAddress: input.value, domain: input.value}, 
+               data: {apiKey: api_key, ipAddress: ipValue, domain: ipValue}, 
                success: function(data) { 
-                liem = JSON.stringify(data,"",2)
-               } 
-           });
-        }); 
-        
-        if(mymap !== undefined) {
-            mymap.remove();
-        }
-        setTimeout(function(){ 
-            let myObj = JSON.parse(liem)
-            document.getElementById("ip_id").innerHTML = myObj.ip; 
-            document.getElementById("location_id").innerHTML = `${myObj.location.city}, ${myObj.location.region} ${myObj.location.postalCode}`; 
-            document.getElementById("timezone_id").innerHTML = myObj.location.timezone;
-            document.getElementById("isp_id").innerHTML = myObj.isp
+                    sObject = JSON.stringify(data,"",2)
+                    
+                setTimeout(function(){ 
+                    let myObj = JSON.parse(sObject)
+                    ipInfo.innerHTML = myObj.ip; 
+                    locationInfo.innerHTML = `${myObj.location.city}, ${myObj.location.region} ${myObj.location.postalCode}`; 
+                    timezoneInfo.innerHTML = myObj.location.timezone;
+                    ispInfo.innerHTML = myObj.isp
+                    
+                    mymap = L.map('mapid').setView([myObj.location.lat, myObj.location.lng], 17); 
             
-            mymap = L.map('mapid').setView([myObj.location.lat, myObj.location.lng], 17); 
-       
-        L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoibGllbTkxIiwiYSI6ImNrcHh1OHN4bTAxYXAyb3JyczJrcmg5Y3MifQ.uchYUbWz84KPtY5nrv7HfA'
-        }).addTo(mymap);
-                var marker = L.marker([myObj.location.lat, myObj.location.lng]).addTo(mymap);
-                }, 1000);
-            }
-
+                L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}`, {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/streets-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1IjoibGllbTkxIiwiYSI6ImNrcHh1OHN4bTAxYXAyb3JyczJrcmg5Y3MifQ.uchYUbWz84KPtY5nrv7HfA'
+                }).addTo(mymap);
+                        let marker = L.marker([myObj.location.lat, myObj.location.lng]).addTo(mymap);
+                        }, 1000);
+                    }
+                });
+                }); 
+        }
+        loadIpData()
+        
     </script> 
 
 </body> 

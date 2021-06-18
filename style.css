@@ -13,7 +13,6 @@
   height: 30%;
   background-image: url("images/pattern-bg.png");
   background-repeat: no-repeat;
-  /* object-position: center; */
   object-fit: cover;
   background-size: cover;
   text-align: center;
@@ -53,12 +52,11 @@
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  /* z-index: 2; */
   z-index: 2;
   position: relative;
 }
 
-.mini-title {
+.info_title {
   color: grey;
   font-size: 10px;
   font-weight: bold;
@@ -71,7 +69,6 @@
 }
 #mapid {
   height: 70%;
-  /* position: relative; */
   z-index: 1;
 }
 
@@ -89,11 +86,11 @@
   .header_input_container {
     max-width: 800px;
   }
-  .mini-title,
-  .info_text {
+  .info_title,
+  .info_value {
     text-align: start;
   }
-  .hallo {
+  .info_container {
     padding-left: 20px;
   }
   #firstinfo {
