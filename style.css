@@ -30,7 +30,7 @@
 .header_input {
   height: 45px;
   flex-grow: 1;
-  border-radius: 10px 0 0 10px;
+  border-radius: 12px 0 0 12px;
   border: none;
   padding-left: 20px;
   font-size: 16px;
@@ -39,7 +39,7 @@
 .header_send {
   background-color: black;
   width: 50px;
-  border-radius: 0 10px 10px 0;
+  border-radius: 0 12px 12px 0;
   border: none;
   cursor: pointer;
 }
@@ -77,21 +77,27 @@
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    max-width: 800px;
-    max-height: 150px;
+    max-width: 1200px;
+    max-height: 180px;
+    margin-top: 40px;
   }
   .header_info > div {
     border-left: 2px lightgray solid;
   }
   .header_input_container {
-    max-width: 800px;
+    max-width: 600px;
   }
   .info_title,
   .info_value {
     text-align: start;
   }
+  .info_title {
+    margin-top: -10px;
+  }
   .info_container {
-    padding-left: 20px;
+    padding-left: 30px;
+    width: 250px;
+    height: 60px;
   }
   #firstinfo {
     border: none;
